@@ -3,13 +3,15 @@ import morgan from "morgan";
 import helmet from "helmet";
 import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
+
 import globalRouter from "./routers/globalRouters";
 import userRouter from "./routers/userRouters";
+import videoRouter from "./routers/videoRouters";
+
 import routes from "./routes";
 import { localsMiddleware } from "./middlewares";
 
 const app = express();
-
 
 app.set('view engine',"pug");
 app.use(cookieParser());
@@ -20,8 +22,8 @@ app.use(morgan("dev"));
 
 app.use(localsMiddleware);
 
-app.use("/", globalRouter);
-app.use("/", userRouter);
-
+app.use(routes.home, globalRouter);
+app.use(routes.users, userRouter);
+app.use(routes.videos, videoRouter);
 
 export default app;
