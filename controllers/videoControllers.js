@@ -2,27 +2,25 @@ import routes from "../routes";
 import Video from "../models/Video";
 import Comment from "../models/Comment";
 
-export const home = async (req, res) =>{
-    try{    
-    const videos = await Video.find({});
-    throw Error("lalal");
-    res.render("home", { pageTitle: "Home", videos});
-    } catch (error) {
-        console.log(error);
-        res.render("home", { pageTitle: "Home", video: []});
-    }
+export const home = (req, res) =>{
+  res.render("home", {pageTitle: "Home" });
 };
 
-export const search = (req, res) => { res.render("Search"), {pageTitle: "Search"}};
+export const search = (req, res) => {
+    const{
+        query: { term: searchingBy}
+    } = req;
+    res.render("search", {pageTitle: "Search"});
+};
 
 export const getUpload = (req, res) => {
     res.render("upload", {pageTitle: "Upload"});
 };
 
-export const postUpload = (req, res) => {
-   const { body } = req;
-   console.log(body);
-   res.render("upload", {pageTitle: "Upload"});
+export const postUpload = async (req, res) => {
+    const {body, file} = req;
+    console.log(body, file);
+    res.render("upload", {pageTitle: "Upload"})
 };
 
 
@@ -44,7 +42,8 @@ export const postEditVideo = (req, res) => {
 }
 
 export const videoDetail = (req, res) => {
-    res.render("videoDetail", {pageTitle: "Video Detail"});
+   res.render("videoDetail", {pageTitle: "videoDetail"});
+    
 }
 
 
