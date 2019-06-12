@@ -1,41 +1,43 @@
+import passport from "passport";
 import routes from "../routes";
 import User from "../models/User";
+import { runInNewContext } from "vm";
 
 export const getJoin = (req, res) => res.render("join");
-export const postJoin = async (req, res) => {
+export const postJoin = async (req, res, next) => {
     const {
         body: { name, email, password, password2 } 
     } = req;
     if( password !== password2 ){
         res.status(400);
-        res.render("join", {pageTitle: "Join"})
+        res.render("/join", {pageTitle: "Join"})
     }
     else{
         try{
         const user = await User.create({
         name,
         email,
-
         });
 
         await User.register(user, password);
+        next();
         } catch(error){
-            console.log(error)
+            console.log(error);
+            res.redirect(routes.home);
         }
 
-        res.redirect(routes.home);
     }
 };
 
 export const getLogin = (req, res) => res.render("login");
-export const postLogin = (req, res) => res.render("login");
+export const postLogin = (req, res) => passport.authenticate('local', {
+    failureRedirect: routes.login,
+    successRedirect: routes.home
+});
  
 export const userDetail = async (req, res) => {
-    const {
-        params: { id }
-    } = req;
     try {
-        res.render("userDetail", { pageTitle: "User Detail", user});
+        res.render("userDetail", { pageTitle: "User Detail"});
     } catch(error){
         res.redirect(routes.home);
     }

@@ -1,13 +1,17 @@
 import "./db";
-
-import app from "./app";
 import dotenv from "dotenv";
+import app from "./app";
+
 dotenv.config();
+
+import "./models/Video";
+import "./models/Comment";
+import "./models/User";
 
 const PORT = process.env.PORT || 4000;
 
 function handleListening(){
-    console.log("Listening to localhost:3000/");
+    console.log("Listening to localhost:4000/");
 }
 
-app.listen(3000, handleListening);
+app.listen(PORT, handleListening);
